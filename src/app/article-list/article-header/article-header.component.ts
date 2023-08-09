@@ -16,12 +16,16 @@ export class ArticleHeaderComponent implements OnInit{
   @Output() changeTitle = new EventEmitter<Article>();
 
   isEdit = false;
-  newTitle: string = '';
+  originalTitle: string = '';
 
   ngOnInit(): void {
-    this.newTitle = this.article.title;
+    this.originalTitle = this.article.title;
   }
 
+  undoTitle(){
+    this.isEdit = false;
+    this.originalTitle = this.article.title;
+  }
 
   onCancelEdit(){
     this.isEdit = false;
@@ -32,8 +36,8 @@ export class ArticleHeaderComponent implements OnInit{
   }
 
   onEditArticle(title:string){
-    this.newTitle = title;
-    const updatedArticle = Object.assign({}, this.article, { id:this.article.id, title: this.newTitle });
+    this.originalTitle = title;
+    const updatedArticle = Object.assign({}, this.article, { id:this.article.id, title: this.originalTitle });
     this.changeTitle.emit(updatedArticle);
   }
 

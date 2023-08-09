@@ -1,9 +1,9 @@
 <header class="post-header">
   <h2 class="post-title">
       <a *ngIf="!isEdit" [href]="article.href">{{ article.title }}</a>
-      <input #tinput *ngIf="isEdit" type="text" size="70" [value]="newTitle"
+      <input #tinput *ngIf="isEdit" type="text" size="70" [value]="originalTitle"
       (keyup.enter)="onEditArticle(tinput.value)"
-      (keyup.escape)="tinput.value = article.title ;!isEdit">
+      (keyup.escape)="undoTitle()">
   </h2>
   <div class="post-info clearfix">
     <span class="post-date"><i class="glyphicon glyphicon-calendar"></i>{{ article.date | date:'shortDate' }}</span>
