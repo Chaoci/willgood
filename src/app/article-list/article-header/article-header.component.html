@@ -2,7 +2,7 @@
   <h2 class="post-title">
       <a *ngIf="!isEdit" [href]="article.href">{{ article.title }}</a>
       <input #tinput *ngIf="isEdit" type="text" size="70" [value]="originalTitle"
-      (keyup.enter)="onEditClick(tinput.value)"
+      (keyup.enter)="onChangeTitle(tinput.value)"
       (keyup.escape)="undoTitle()">
   </h2>
   <div class="post-info clearfix">
@@ -10,7 +10,7 @@
     <span class="post-author"><i class="glyphicon glyphicon-user"></i><a href="http://blog.miniasp.com/author/will.aspx">{{ article.author }}</a></span>
     <span class="post-category"><i class="glyphicon glyphicon-folder-close"></i><a [href]="article['category-link']">{{ article.category }}</a></span>
     <button (click)="onDeleteClick()">刪除文章</button>
-    <button *ngIf="!isEdit" (click)="onStateClick()">編輯文章</button>
+    <button *ngIf="!isEdit" (click)="onEditClick()">編輯文章</button>
     <button *ngIf="isEdit" (click)="onCancelClick()">取消編輯</button>
   </div>
 </header>

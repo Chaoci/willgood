@@ -9,23 +9,23 @@ import { Observable } from 'rxjs';
 
 export class ArticlesService {
 
-  #articlesUrl: string = ' http://localhost:3000/articles';
+  #url: string = 'http://localhost:3000/articles';
 
   constructor() { }
 
-  http = inject(HttpClient);
+  #http = inject(HttpClient);
 
   getArticles():Observable<Article[]> {
-    return this.http.get<Article[]>(this.#articlesUrl)
+    return this.#http.get<Article[]>(this.#url)
   }
 
 
   doDelete(targetArticle : Article) {
-    return this.http.delete(this.#articlesUrl + "/"+targetArticle.id)
+    return this.#http.delete(`${this.#url}/${targetArticle.id}`)
   }
 
   doModify(articlePost: Article){
-    return this.http.put(this.#articlesUrl + '/'+articlePost.id, articlePost);
+    return this.#http.put(`${this.#url}/${articlePost.id}`, articlePost);
   }
 
 }

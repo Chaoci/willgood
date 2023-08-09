@@ -35,13 +35,13 @@ export class ArticleHeaderComponent implements OnInit{
     this.delete.emit(this.article);
   }
 
-  onEditClick(title:string){
+  onChangeTitle(title:string){
     this.originalTitle = title;
     const updatedArticle = Object.assign({}, this.article, { id:this.article.id, title: this.originalTitle });
     this.changeTitle.emit(updatedArticle);
   }
 
-  onStateClick(){
+  onEditClick(){
     this.isEdit = true;
   }
 }

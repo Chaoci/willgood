@@ -14,8 +14,10 @@ import { ArticleListComponent } from './article-list/article-list.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
   keyword: string = '';
-  keywordLength: number = this.keyword.length;
   constructor() {}
 
   resetKeyword(): void {

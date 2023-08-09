@@ -51,7 +51,7 @@
                       [(ngModel)]="keyword" (keyup.escape)="resetKeyword()"
                       placeholder="請輸入搜尋關鍵字" accesskey="s">
                     <input type="button" value="搜尋" id="searchbutton">
-                    <br> 關鍵字： {{ keyword }} 目前字數： {{ keywordLength }}
+                    <br> 關鍵字： {{ keyword }} 目前字數： {{ keyword.length }}
                   </div>
               </div>
             </div>

@@ -35,21 +35,23 @@ export class ArticleListComponent implements OnInit{
   articlesService = inject(ArticlesService);
 
   ngOnInit(): void {
-    this.loadData();
+    this.getArticles();
   }
 
-  deleteArticle(targetArticle: Article){
-    this.articlesService.doDelete(targetArticle).subscribe(x => {
-      this.articles$ = this.articles$.pipe(filter((articles:any) => {
-        return articles.id!== targetArticle.id
-      },(error:any)=> {
-        console.log(error);
-      }));
-    });
+  async deleteArticle(targetArticle: Article){
+
+    try{
+      const result = this.articlesService.doDelete(targetArticle);
+      await lastValueFrom(result);
+      this.getArticles();
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
   }
 
 
-  async loadData(){
+  async getArticles(){
     this.list = await lastValueFrom(this.articlesService.getArticles());
   }
 
@@ -58,7 +60,7 @@ export class ArticleListComponent implements OnInit{
     try {
         const result = this.articlesService.doModify(article);
         await lastValueFrom(result);
-        this.loadData();
+        this.getArticles();
 
     } catch (error) {
         console.error("Error:", error);
