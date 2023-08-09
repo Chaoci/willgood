@@ -20,10 +20,4 @@ export class HeaderComponent {
     return {'font-size':(12 + this.counter) + 'px'}
   }
 
-  webTitleChange(altKey: boolean) {
-    if (altKey) {
-      this.title  = 'The Will Will Web';
-    }
-    this.counter++;
-  }
 }

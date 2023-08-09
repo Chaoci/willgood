@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Article } from '../article';
 
 @Component({
   selector: 'app-article-body',
@@ -9,5 +10,5 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./article-body.component.scss']
 })
 export class ArticleBodyComponent {
-  @Input() article:any;
+  @Input() article!:Article;
 }

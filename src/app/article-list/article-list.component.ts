@@ -1,18 +1,21 @@
 import { ArticlesService } from './articles.service';
 import { Component, OnInit, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ArticleBodyComponent } from './article-body/article-body.component';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ArticleHeaderComponent } from './article-header/article-header.component';
-import { Observable } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
+import { Article } from './article';
 
 
 @Component({
   selector: 'app-article-list',
   standalone: true,
   imports: [
-    CommonModule,
+    NgFor,
+    NgIf,
+    AsyncPipe,
     RouterOutlet,
     FormsModule,
     ArticleHeaderComponent,
@@ -24,38 +27,44 @@ import { Observable } from 'rxjs';
 })
 export class ArticleListComponent implements OnInit{
 
-  articlesData$!: Observable<any>;
+  articles$!: Observable<Array<Article>>;
 
   constructor(){}
 
   articlesService = inject(ArticlesService);
 
   ngOnInit(): void {
-    this.articlesData$ = this.articlesService.getArticlesData()
-    // .subscribe((httpResult: any) => {
-    //   this.articlesData = httpResult;
+    this.articles$ = this.articlesService.getArticles()
+    // .subscribe((x: any) => {
+    //   this.articles$ = x;
     // });
   }
 
-  // deleteArticle(targetArticle: any){
-  //   this.articlesService.doDelete(targetArticle).subscribe(result => {
-  //     this.articlesData = this.articlesData.filter((articles:any) => {
-  //       return articles.id!== targetArticle.id
-  //     },(error:any)=> {
-  //       console.log(error);
-  //     })
-  //   });
-  // }
+  deleteArticle(targetArticle: any){
+    this.articlesService.doDelete(targetArticle).subscribe(result => {
+      this.articles$ = this.articles$.pipe(filter((articles:any) => {
+        return articles.id!== targetArticle.id
+      },(error:any)=> {
+        console.log(error);
+      }));
+    });
+  }
 
-  // doModify(articlePost: any){
-  //   this.articlesService.doModify(articlePost).subscribe(result => {
-  //     this.articlesData = this.articlesData.map((item: any) =>{
-  //       if (item.id == articlePost.id) {
-  //         return Object.assign({}, item, articlePost);
-  //       }
-  //       return item;
-  //     });
-  //   });
-  // }
+  doModify(articlePost: any){
+    console.log(articlePost);
+    this.articlesService.doModify(articlePost).subscribe(result => {
+      this.articles$ = this.articles$.pipe(
+        map((articles: any[]) => {
+          return articles.map((item: any) => {
+            if (item.id == articlePost.id) {
+              return Object.assign({}, item, articlePost);
+            }
+            return item;
+          });
+        })
+      );
+    });
+  }
+
 
 }
