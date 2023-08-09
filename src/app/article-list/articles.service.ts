@@ -9,30 +9,23 @@ import { Observable } from 'rxjs';
 
 export class ArticlesService {
 
-  articlesUrl: string = ' http://localhost:3000/articles';
+  #articlesUrl: string = ' http://localhost:3000/articles';
 
   constructor() { }
 
   http = inject(HttpClient);
 
   getArticles():Observable<Article[]> {
-    return this.http.get<Article[]>(this.articlesUrl)
+    return this.http.get<Article[]>(this.#articlesUrl)
   }
 
 
   doDelete(targetArticle : Article) {
-    // this.articlesData = this.articlesData.filter((articles:any) => {return articles.id!== targetArticle.id});
-    return this.http.delete(this.articlesUrl + "/"+targetArticle.id)
+    return this.http.delete(this.#articlesUrl + "/"+targetArticle.id)
   }
 
   doModify(articlePost: Article){
-    // this.articlesData = this.articlesData.map((item: any) =>{
-    //   if (item.id == articlePost.id) {
-    //     return Object.assign({}, item, articlePost);
-    //   }
-    //   return item;
-    // })
-    return this.http.put(this.articlesUrl + '/'+articlePost.id, articlePost);
+    return this.http.put(this.#articlesUrl + '/'+articlePost.id, articlePost);
   }
 
 }

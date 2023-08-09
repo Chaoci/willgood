@@ -1,6 +1,6 @@
-<article class="post" id="post{{idx}}" *ngFor="let article of articles$|async; let idx = index">
+<article class="post" id="post{{idx}}" *ngFor="let article of list; let idx = index">
   <app-article-header [article]="article" (delete)="deleteArticle($event)"
-  (changeTitle)="doModify($event)" >
+  (changeTitle)="onChangeTitle($event)" >
 </app-article-header>
   <app-article-body [article]="article"></app-article-body>
   <!-- <pre>{{ item | json }}</pre> -->

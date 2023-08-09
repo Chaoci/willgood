@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Article } from '../article';
 
 @Component({
   selector: 'app-article-header',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [NgIf,DatePipe , FormsModule],
   templateUrl: './article-header.component.html',
   styleUrls: ['./article-header.component.scss']
 })
@@ -27,21 +27,21 @@ export class ArticleHeaderComponent implements OnInit{
     this.originalTitle = this.article.title;
   }
 
-  onCancelEdit(){
+  onCancelClick(){
     this.isEdit = false;
   }
 
-  deleteArticle(){
+  onDeleteClick(){
     this.delete.emit(this.article);
   }
 
-  onEditArticle(title:string){
+  onEditClick(title:string){
     this.originalTitle = title;
     const updatedArticle = Object.assign({}, this.article, { id:this.article.id, title: this.originalTitle });
     this.changeTitle.emit(updatedArticle);
   }
 
-  onEditState(){
+  onStateClick(){
     this.isEdit = true;
   }
 }

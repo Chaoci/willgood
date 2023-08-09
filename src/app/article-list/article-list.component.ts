@@ -5,7 +5,7 @@ import { ArticleBodyComponent } from './article-body/article-body.component';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ArticleHeaderComponent } from './article-header/article-header.component';
-import { Observable, filter, map } from 'rxjs';
+import { Observable, filter, lastValueFrom } from 'rxjs';
 import { Article } from './article';
 
 
@@ -28,20 +28,18 @@ import { Article } from './article';
 export class ArticleListComponent implements OnInit{
 
   articles$!: Observable<Array<Article>>;
+  list: Array<Article> = [];
 
   constructor(){}
 
   articlesService = inject(ArticlesService);
 
   ngOnInit(): void {
-    this.articles$ = this.articlesService.getArticles()
-    // .subscribe((x: any) => {
-    //   this.articles$ = x;
-    // });
+    this.loadData();
   }
 
-  deleteArticle(targetArticle: any){
-    this.articlesService.doDelete(targetArticle).subscribe(result => {
+  deleteArticle(targetArticle: Article){
+    this.articlesService.doDelete(targetArticle).subscribe(x => {
       this.articles$ = this.articles$.pipe(filter((articles:any) => {
         return articles.id!== targetArticle.id
       },(error:any)=> {
@@ -50,21 +48,21 @@ export class ArticleListComponent implements OnInit{
     });
   }
 
-  doModify(articlePost: any){
-    console.log(articlePost);
-    this.articlesService.doModify(articlePost).subscribe(result => {
-      this.articles$ = this.articles$.pipe(
-        map((articles: any[]) => {
-          return articles.map((item: any) => {
-            if (item.id == articlePost.id) {
-              return Object.assign({}, item, articlePost);
-            }
-            return item;
-          });
-        })
-      );
-    });
+
+  async loadData(){
+    this.list = await lastValueFrom(this.articlesService.getArticles());
   }
 
+  async onChangeTitle(article: Article) {
+
+    try {
+        const result = this.articlesService.doModify(article);
+        await lastValueFrom(result);
+        this.loadData();
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
 
 }

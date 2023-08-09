@@ -1,10 +1,10 @@
 export interface Article {
   id: number;
-  href?: string;
+  href: string;
   title: string;
-  date?: string;
-  author?: string;
-  category?: string;
-  "category-link"?: string;
-  summary?: string;
+  date: string;
+  author: string;
+  category: string;
+  "category-link": string;
+  summary: string;
 }
